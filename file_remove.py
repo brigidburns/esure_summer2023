@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 This Python script is used to remove the raw files without matching .frd files. 
 The script runs through each raw file, comparing it to each of the available .frd files. 
