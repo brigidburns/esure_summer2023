@@ -7,7 +7,6 @@ close all
 sonde_idx = 1;
 filedirtmp = './Kyle2008_Processed/';
 file_list = dir(filedirtmp); 
-disp(file_list); 
 
 for i = 1:length(file_list)
     if ~file_list(i).isdir
