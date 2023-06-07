@@ -112,11 +112,12 @@ Vmms_TC = convSpeed.*TCOBS_Vmax;
 
 clearvars cach
 
+count_sonde = 1; 
 mean_U_profiles_onestorm = zeros(num_z,num_rad_bins,num_wind_bins); 
 numvecU_onestorm = zeros(num_z,num_rad_bins,num_wind_bins); 
 
 fprintf('Starting storm: Kyle 2008\n'); 
-hurr = 'Kyle2008/'
+hurr = 'Kyle2008/'; 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Check if storm is in TCOBS or EBT
@@ -154,12 +155,13 @@ if (isEBT + isTCOBS > 0)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     % Before cycling through sondes, open and read this storm's track file:
-    trackfile = strcat('./Track_data/',hurr{1}(1:end-1),'.txt');
+    trackfile = strcat('./Track_data/',hurr(1:end-1),'.txt');
     F = readtable(trackfile,'Format','%{MM/dd/yyyy}D %{hh:mm:ss}T %f %s %f %s'); 
 
 
     filedirtmp = './Kyle2008_Processed/'; 
     file_list = dir(filedirtmp); 
+    files = dir([filedirtmp '*.frd']); 
 
     % Try loading all frd files from Kyle, stored using 'read_kyle_frd_files.m'
     % to reduce reading time of each individual sonde
@@ -238,7 +240,7 @@ if (isEBT + isTCOBS > 0)
 
             % Compute the radius of the sonde based on the current center
             % lat,lon here of the sonde are the LAUNCH coordinates
-            [lat_center,lon_center,lat,lon,time_sonde] = get_track(F,); %%%
+            [lat_center,lon_center,lat,lon,time_sonde] = get_track(F,[filedirtmp files(i).name]); %%%
 
             lat = lat-lat_center; 
             lon = lon-lon_center; 
@@ -255,7 +257,7 @@ if (isEBT + isTCOBS > 0)
                 xs = rearth*tand(lon_s); 
                 ys = rearth*tand(lat_s); 
 
-                atan_tmp = atan(ys,xs); % Location of lat/lon in polar angle
+                atan_tmp = atan2(ys,xs); % Location of lat/lon in polar angle
                 angle = atan_tmp + (atan_tmp<0)*2*pi; % Need to correct for atan2 returning between -pi and pi
                 angle = angle - pi/2; % Get the CCW rotation angle right according to the polar angle
                 rotmat = [cos(2*pi-angle) -sin(2*pi-angle); sin(2*pi-angle) cos(2*pi-angle)]; 
