@@ -3,9 +3,10 @@ clc
 close all
 
 % Hurricane: Kyle 2008
+% .frd files processed without Dynamic Correction in ASPEN
 
 sonde_idx = 1;
-filedirtmp = './Kyle2008_Processed/';
+filedirtmp = './Kyle2008_DynamicCorrection/';
 file_list = dir(filedirtmp); 
 
 for i = 1:length(file_list)
@@ -19,6 +20,6 @@ for i = 1:length(file_list)
 end
 
 % When first running this script, this file cannot already exist
-filename = './Kyle2008_Processed/Kyle2008_frd_files.mat'; 
+filename = './Kyle2008_DynamicCorrection/Kyle2008_dc_frd_files.mat'; 
 save(filename, 'frddat'); 
 clearvars frddat
