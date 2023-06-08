@@ -1,5 +1,6 @@
 %%% Bin_KyleSondeData.m %%%
-%%% This script bins only the sonde data from the original .frd files %%%
+%%% This script bins only the sonde data from the original .frd files 
+%%% Saves to kyle2008_data_rad.mat and kyle2008_constants_rad.mat 
 clear all
 close all
 clc
@@ -380,9 +381,7 @@ num_samples = sum(numsonde(:,:),2);
 plot(rplot,num_samples,'-*k')
 
 %% Saving Variables
-
-%save('allStorms_all_sst_rad.mat','ssttosave');
-save('allStorms_all_profile_data_rad.mat','all_U_profiles','all_theta_profiles','all_q_profiles','all_k_profiles','all_p_profiles');
-save('allStorms_constants_rad.mat','rho','cpa','cpl','cpv','Lv','pbl_height','max_height',...
+save('kyle2008_data_rad.mat','all_U_profiles','all_theta_profiles','all_q_profiles','all_k_profiles','all_p_profiles');
+save('kyle2008_constants_rad.mat','rho','cpa','cpl','cpv','Lv','pbl_height','max_height',...
      'min_height','height_interval','num_z','max_rad','rad_interval',...
      'num_rad_bins','max_wind','wind_interval','num_wind_bins');

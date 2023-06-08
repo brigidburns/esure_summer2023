@@ -1,6 +1,7 @@
-%%% Bin_DCSondeData.m %%%
-%%% This script bins the sonde data from the .frd files %%%
-%%% processed without Dynamic Correction
+%%% Bin_ProcessedSondeData.m %%%
+%%% This script bins the sonde data from the files processed manually by
+%%% ASPEN 
+%%% Saves to kyle2008_processed_data_rad.mat and kyle2008_processed_constants_rad.mat
 clear all
 close all
 clc
@@ -157,11 +158,11 @@ for hurr = hurrvec % 1. loop every hurricane
         trackfile = strcat('./Track_data/',hurr{1}(1:end-1),'.txt');
         F = readtable(trackfile,'Format','%{MM/dd/yyyy}D %{hh:mm:ss}T %f %s %f %s');
         
-        filedirtmp = './Kyle2008_DynamicCorrection/'; 
+        filedirtmp = './Kyle2008_Processed/';  
         files = dir([filedirtmp '*.frd']);
         
         %Try loading all frd files from a single storm, stored using 'read_frd_files.m' to reduce reading time of each individual sonde
-        frd_filename = strcat('./Kyle2008_DynamicCorrection/',hurr{1}(1:end-1),'_dc_frd_files.mat');
+        frd_filename = strcat('./Kyle2008_Processed/',hurr{1}(1:end-1),'_frd_files.mat');
         load(frd_filename);
         
         for i=1:length(files) % 2. loop every dropsonde
@@ -175,8 +176,8 @@ for hurr = hurrvec % 1. loop every hurricane
             RHtmp = dat(:,5);   % [%]
             Utmp = dat(:,9);    % [m/s] -- the zonal velocity component
             Vtmp = dat(:,10);   % [m/s] -- the meridonal velocity component
-            lattmp = dat(:,18); %Deg N
-            lontmp = dat(:,19); %Deg E
+            lattmp = dat(:,18); % Deg N
+            lontmp = dat(:,19); % Deg E
             
             %Clean the data - if any of them have a negative signal, remove for
             %all profiles (only want a profile if all data is there)
@@ -292,7 +293,7 @@ for hurr = hurrvec % 1. loop every hurricane
                         radbin = floor(rad_sonde_rms_ratio/rad_interval)+1;
                         if (radbin > num_rad_bins)
                             radbin = 0; %Don't include if it falls outside of range
-                        end
+                        end      
                     end % r_rmw_rad_hurr<100
                 end % k_rmw_time_hurr from dropsonds has a corresponding RMW from Dan's data
                 
@@ -335,12 +336,14 @@ for hurr = hurrvec % 1. loop every hurricane
                     numsonde(radbin,windbin) = numsonde(radbin,windbin) + 1;
                     
                 end
+                
+                
                 sondexvec(count_sonde) = x/r_rmw_rad_hurr;
                 sondeyvec(count_sonde) = y/r_rmw_rad_hurr;
                 count_sonde = count_sonde + 1;
                 
             end  %If length(z)>0 statement
-        end %All the .frd files in one hurricane
+        end %All the .frd files in one hurricane        
     end % hurr in the rmw file?
 end %Loop over hurricanes
 
@@ -367,7 +370,7 @@ plot(sondexvec,sondeyvec,'x')
 xlabel('x')
 ylabel('y')
 axis([-max_rad max_rad -max_rad max_rad])
-
+ 
 figure(5)
 hold on
 clim([0 60])
@@ -380,9 +383,8 @@ num_samples = sum(numsonde(:,:),2);
 plot(rplot,num_samples,'-*k')
 
 %% Saving Variables
-
-%save('allStorms_all_sst_rad.mat','ssttosave');
-save('allStorms_all_profile_data_rad.mat','all_U_profiles','all_theta_profiles','all_q_profiles','all_k_profiles','all_p_profiles');
-save('allStorms_constants_rad.mat','rho','cpa','cpl','cpv','Lv','pbl_height','max_height',...
+% Save to kyle2008_dc_data_rad.mat and kyle2008_dc_constants_rad.mat
+save('kyle2008_dc_data_rad.mat','all_U_profiles','all_theta_profiles','all_q_profiles','all_k_profiles','all_p_profiles');
+save('kyle2008_dc_constants_rad.mat','rho','cpa','cpl','cpv','Lv','pbl_height','max_height',...
      'min_height','height_interval','num_z','max_rad','rad_interval',...
      'num_rad_bins','max_wind','wind_interval','num_wind_bins');
