@@ -1,5 +1,6 @@
-%%% Bin_KyleSondeData.m %%%
-%%% This script bins only the sonde data from the original .frd files %%%
+%%% Bin_DCSondeData.m %%%
+%%% This script bins the sonde data from the .frd files %%%
+%%% processed without Dynamic Correction
 clear all
 close all
 clc
@@ -156,12 +157,11 @@ for hurr = hurrvec % 1. loop every hurricane
         trackfile = strcat('./Track_data/',hurr{1}(1:end-1),'.txt');
         F = readtable(trackfile,'Format','%{MM/dd/yyyy}D %{hh:mm:ss}T %f %s %f %s');
         
-        filedirtmp = strcat('./all_storms/',hurr);
-        filedir = filedirtmp{1};
-        files = dir([filedir '*.frd']);
+        filedirtmp = './Kyle2008_DynamicCorrection/'; 
+        files = dir([filedirtmp '*.frd']);
         
         %Try loading all frd files from a single storm, stored using 'read_frd_files.m' to reduce reading time of each individual sonde
-        frd_filename = strcat('./all_storms/',hurr{1}(1:end-1),'_frd_files.mat');
+        frd_filename = strcat('./Kyle2008_DynamicCorrection/',hurr{1}(1:end-1),'_dc_frd_files.mat');
         load(frd_filename);
         
         for i=1:length(files) % 2. loop every dropsonde
@@ -238,7 +238,7 @@ for hurr = hurrvec % 1. loop every hurricane
                
                 %Compute the radius of the sonde based on the current center
                 %lat,lon here of the sonde are the LAUNCH coordinates
-                [lat_center,lon_center,lat,lon,time_sonde] = get_track(F,[filedir files(i).name]);
+                [lat_center,lon_center,lat,lon,time_sonde] = get_track(F,[filedirtmp files(i).name]);
                 
                 lat = lat-lat_center;
                 lon = lon-lon_center;
