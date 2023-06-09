@@ -1,7 +1,7 @@
 %%% Bin_ProcessedSondeData.m %%%
 %%% This script bins the sonde data from the files processed manually by
 %%% ASPEN 
-%%% Saves to kyle2008_processed_data_rad.mat and kyle2008_processed_constants_rad.mat
+%%% Saves to kyle2008_dc_data_rad.mat and kyle2008_dc_constants_rad.mat
 clear all
 close all
 clc
