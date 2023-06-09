@@ -383,7 +383,7 @@ num_samples = sum(numsonde(:,:),2);
 plot(rplot,num_samples,'-*k')
 
 %% Saving Variables
-% Saves to kyle2008_processed_data_rad.mat and kyle2008_processed_constants_rad.mat
+% Script saves to kyle2008_processed_data_rad.mat and kyle2008_processed_constants_rad.mat
 save('kyle2008_processed_data_rad.mat','all_U_profiles','all_theta_profiles','all_q_profiles','all_k_profiles','all_p_profiles');
 save('kyle2008_processed_constants_rad.mat','rho','cpa','cpl','cpv','Lv','pbl_height','max_height',...
      'min_height','height_interval','num_z','max_rad','rad_interval',...
