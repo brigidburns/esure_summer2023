@@ -20,7 +20,7 @@ if not os.path.exists(raw_path) or not os.path.exists(frd_path):
 
 if os.path.exists(processed_path):
     # Define the commands to execute
-    processed_ls_command = 'ls {}'.format(shlex.quote(raw_path))
+    processed_ls_command = 'ls {}'.format(shlex.quote(processed_path))
     processed_wc_command = 'wc -l'
 
     # Execute the commands
