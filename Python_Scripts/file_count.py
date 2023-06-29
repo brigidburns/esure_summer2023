@@ -12,10 +12,27 @@ hurricane = input('Enter the hurricane name and year, in the form NameYear (ex: 
 # Specify the path to each directory
 raw_path = path_base + hurricane + '/' + hurricane + '_Raw/'
 frd_path = path_base + hurricane + '/' + hurricane + '_FRD/'
+processed_path = path_base + hurricane + '/' + hurricane + '_Processed/'
 
 if not os.path.exists(raw_path) or not os.path.exists(frd_path):
     print('Error: Invalid path.')
     exit(1)
+
+if os.path.exists(processed_path):
+    # Define the commands to execute
+    processed_ls_command = 'ls {}'.format(shlex.quote(raw_path))
+    processed_wc_command = 'wc -l'
+
+    # Execute the commands
+    processed_ls_process = subprocess.Popen(processed_ls_command, shell=True, stdout=subprocess.PIPE)
+    processed_wc_process = subprocess.Popen(processed_wc_command, shell=True, stdin=processed_ls_process.stdout, stdout=subprocess.PIPE)
+
+    # Capture the output of the command 
+    processed_output, processed_error = processed_wc_process.communicate()
+
+    # Print the output of the command 
+    print('Number of processed files:')
+    print(processed_output.decode().strip())
 
 # Define the commands to execute
 raw_ls_command = 'ls {}'.format(shlex.quote(raw_path))
