@@ -13,45 +13,24 @@ hurricane = input('Enter the hurricane name and year, in the form NameYear (ex: 
 raw_path = path_base + hurricane + '/' + hurricane + '_Raw/'
 frd_path = path_base + hurricane + '/' + hurricane + '_FRD/'
 processed_path = path_base + hurricane + '/' + hurricane + '_Processed/'
+dc_path = path_base + hurricane + '/' + hurricane + '_DynamicCorrection/'
 
 if not os.path.exists(raw_path) or not os.path.exists(frd_path):
     print('Error: Invalid path.')
     exit(1)
 
+# Count the number of raw and .frd files
+num_raw_files = sum(len(files) for _, _, files in os.walk(raw_path))
+num_frd_files = sum(len(files) for _, _, files in os.walk(frd_path))
+
+# Print the number of files
+print(f'Number of raw files: {num_raw_files}')
+print(f'Number of FRD files: {num_frd_files}')
+
 if os.path.exists(processed_path):
-    # Define the commands to execute
-    processed_ls_command = 'ls {}'.format(shlex.quote(processed_path))
-    processed_wc_command = 'wc -l'
+    num_processed_files = sum(len(files) for _, _, files in os.walk(processed_path))
+    print(f'Number of processed files: {num_processed_files}')
 
-    # Execute the commands
-    processed_ls_process = subprocess.Popen(processed_ls_command, shell=True, stdout=subprocess.PIPE)
-    processed_wc_process = subprocess.Popen(processed_wc_command, shell=True, stdin=processed_ls_process.stdout, stdout=subprocess.PIPE)
-
-    # Capture the output of the command 
-    processed_output, processed_error = processed_wc_process.communicate()
-
-    # Print the output of the command 
-    print('Number of processed files:')
-    print(processed_output.decode().strip())
-
-# Define the commands to execute
-raw_ls_command = 'ls {}'.format(shlex.quote(raw_path))
-raw_wc_command = 'wc -l'
-frd_ls_command = 'ls {}'.format(shlex.quote(frd_path))
-frd_wc_command = 'wc -l'
-
-# Execute the commands
-raw_ls_process = subprocess.Popen(raw_ls_command, shell=True, stdout=subprocess.PIPE)
-raw_wc_process = subprocess.Popen(raw_wc_command, shell=True, stdin=raw_ls_process.stdout, stdout=subprocess.PIPE)
-frd_ls_process = subprocess.Popen(frd_ls_command, shell=True, stdout=subprocess.PIPE)
-frd_wc_process = subprocess.Popen(frd_wc_command, shell=True, stdin=frd_ls_process.stdout, stdout=subprocess.PIPE)
-
-# Capture the output of the command
-raw_output, raw_error = raw_wc_process.communicate()
-frd_output, frd_error = frd_wc_process.communicate()
-
-# Print the output of the command 
-print('Number of raw files:')
-print(raw_output.decode().strip())
-print('Number of FRD files:')
-print(frd_output.decode().strip())
+if os.path.exists(dc_path):
+    num_dc_files = sum(len(files) for _, _, files in os.walk(dc_path))
+    print(f'Number of DC files: {num_dc_files}')
